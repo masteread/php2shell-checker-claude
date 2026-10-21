@@ -1,0 +1,18 @@
+{
+  "name": "phpcheck",
+  "version": "1.0.0",
+  "description": "Check whether a site or server runs a PHP version affected by PHP2Shell, without sending exploit requests.",
+  "author": {
+    "name": "Eduardo Aguirre"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "php",
+    "security",
+    "php2shell",
+    "patch",
+    "version-check"
+  ],
+  "homepage": "https://github.com/masteread/php2shell-checker-claude",
+  "repository": "https://github.com/masteread/php2shell-checker-claude"
+}

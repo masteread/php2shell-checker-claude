@@ -1,0 +1,17 @@
+PHP2Shell Checker para Claude Code
+
+This project is a modified version of php2shell-checker
+(https://github.com/openai/php2shell-checker), Copyright OpenAI,
+licensed under the Apache License, Version 2.0.
+
+Changes from the original:
+- Packaged as a Claude Code plugin and marketplace (.claude-plugin/).
+- Renamed skills phpcheck-url and phpcheck-server to url and server, with
+  Claude Code frontmatter (argument-hint, allowed-tools) and
+  ${CLAUDE_SKILL_DIR} paths.
+- Expanded skill instructions (redirects, PHP-FPM vs CLI, distribution
+  packages, authorization).
+- Moved tests to test/ and added package.json.
+- Rewrote README in Spanish; added CHANGELOG.
+
+The checker script (skills/url/scripts/phpcheck.js) is unchanged.

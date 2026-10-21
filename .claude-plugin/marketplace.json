@@ -1,0 +1,13 @@
+{
+  "name": "php2shell",
+  "description": "PHP2Shell patch checker for Claude Code.",
+  "owner": { "name": "Eduardo Aguirre" },
+  "plugins": [
+    {
+      "name": "phpcheck",
+      "source": "./",
+      "description": "Check whether a site or server runs a PHP version affected by PHP2Shell, without sending exploit requests.",
+      "version": "1.0.0"
+    }
+  ]
+}

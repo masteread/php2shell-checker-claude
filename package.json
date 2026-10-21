@@ -1,0 +1,13 @@
+{
+  "name": "php2shell-checker-claude",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PHP2Shell patch checker packaged as a Claude Code plugin.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
