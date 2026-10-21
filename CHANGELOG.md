@@ -4,6 +4,16 @@ Todos los cambios relevantes de este proyecto se documentan aquí. El formato
 sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el proyecto
 usa [versionado semántico](https://semver.org/lang/es/).
 
+## [1.2.0] - 2026-10-21
+
+### Añadido
+
+- El checker muestra un aviso en stderr cuando se ejecuta contra una URL con
+  un Node.js sin los parches del 21 de octubre de 2026 (anterior a 22.23.4,
+  24.22.1 o 26.12.1, o de una rama sin soporte). El resultado, el JSON y el
+  código de salida no cambian, y `--local` no avisa porque no usa la red.
+- Pruebas del aviso con versiones parcheadas, sin parchear y sin soporte.
+
 ## [1.1.1] - 2026-10-21
 
 ### Cambiado

@@ -38,6 +38,8 @@ Run the command exactly as shown, as a single command. Do not chain `echo`,
 pipes or other commands onto it: the JSON output already includes
 `exit_code`, and a modified command is no longer pre-approved.
 
+If the checker prints a Node.js warning on stderr, pass it on to the user.
+
 Exit codes 1 and 3 mean vulnerable and unknown. They are results, not
 execution failures. Exit code 2 means invalid arguments.
 

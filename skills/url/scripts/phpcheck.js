@@ -12,6 +12,21 @@ const VULNERABLE_THROUGH = {
   '7.0': 33, '7.1': 33, '7.2': 34, '7.3': 33, '7.4': 33,
   '8.0': 30, '8.1': 34, '8.2': 34, '8.3': 35, '8.4': 26, '8.5': 11,
 }
+// First Node.js release per line with the 2026-10-21 security fixes (Brotli
+// decoder RCE, TLS hostname bypasses). Older lines are end-of-life.
+const NODE_FIXED = { 22: [22, 23, 4], 24: [24, 22, 1], 26: [26, 12, 1] }
+const NODE_NEWEST_LINE = 26
+
+function nodeWarning(version) {
+  const parts = /^v?(\d+)\.(\d+)\.(\d+)/.exec(version || '')?.slice(1).map(Number)
+  if (!parts || parts[0] > NODE_NEWEST_LINE) return null
+  const fixed = NODE_FIXED[parts[0]]
+  if (fixed && (parts[1] - fixed[1] || parts[2] - fixed[2]) >= 0) return null
+  const update = fixed ? fixed.join('.') : '22.23.4, 24.22.1 or 26.12.1'
+  return `Warning: Node.js ${version} is missing the October 21, 2026 security fixes. ` +
+    `Update to ${update} or later: this checker connects to servers you do not control.`
+}
+
 const USAGE = 'Usage: node phpcheck.js URL [--timeout SECONDS] [--json]\n' +
   '       node phpcheck.js --local [--php PATH] [--json]\n' +
   '       node phpcheck.js --version'
@@ -73,6 +88,12 @@ async function main() {
     console.error(error.message + '\n' + USAGE)
     process.exitCode = 2
     return
+  }
+
+  if (!values.local) {
+    // PHPCHECK_NODE_VERSION overrides the detected version for tests.
+    const warning = nodeWarning(process.env.PHPCHECK_NODE_VERSION || process.version)
+    if (warning) console.error(warning)
   }
 
   let version = null, error = null, status = 'unknown'

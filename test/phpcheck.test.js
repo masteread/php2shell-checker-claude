@@ -7,9 +7,11 @@ const { tmpdir } = require('node:os')
 const path = require('node:path')
 const { test } = require('node:test')
 
-function run(args, script = path.join(__dirname, '..', 'phpcheck.js')) {
+// Pretend to run on a patched Node.js unless a test picks a version.
+function run(args, script = path.join(__dirname, '..', 'phpcheck.js'), nodeVersion = 'v24.22.1') {
   return new Promise((resolve, reject) => {
-    const child = spawn(process.execPath, [script, ...args])
+    const env = { ...process.env, PHPCHECK_NODE_VERSION: nodeVersion }
+    const child = spawn(process.execPath, [script, ...args], { env })
     let stdout = '', stderr = ''
     child.stdout.on('data', chunk => { stdout += chunk })
     child.stderr.on('data', chunk => { stderr += chunk })
@@ -162,6 +164,33 @@ test('requests an uncompressed response', async t => {
   })
   check(await run([url, '--json']), 'ok', '8.4.27')
   assert.deepEqual(encodings, ['identity'])
+})
+
+for (const [nodeVersion, update] of [
+  ['v24.19.0', '24.22.1'], ['v22.23.3', '22.23.4'], ['v26.11.9', '26.12.1'],
+  ['v25.9.0', '22.23.4, 24.22.1 or 26.12.1'], ['v20.19.5', '22.23.4, 24.22.1 or 26.12.1'],
+]) {
+  test(`unpatched Node.js ${nodeVersion} warns on stderr without changing the result`, async t => {
+    const url = await serve(t, (req, res) => { res.setHeader('X-Powered-By', 'PHP/8.4.26'); res.end() })
+    const result = await run([url, '--json'], undefined, nodeVersion)
+    assert.equal(result.code, 1)
+    assert.equal(JSON.parse(result.stdout).patch_status, 'vulnerable')
+    assert.match(result.stderr, new RegExp(`^Warning: Node\\.js ${nodeVersion} .*Update to ${update} or later`))
+  })
+}
+
+for (const nodeVersion of ['v22.23.4', 'v24.22.1', 'v24.30.0', 'v26.12.1', 'v27.0.0']) {
+  test(`patched Node.js ${nodeVersion} prints no warning`, async t => {
+    const url = await serve(t, (req, res) => { res.setHeader('X-Powered-By', 'PHP/8.4.27'); res.end() })
+    const result = await run([url, '--json'], undefined, nodeVersion)
+    assert.equal(result.stderr, '')
+    assert.equal(result.code, 0)
+  })
+}
+
+test('--local does not warn about Node.js because it makes no network requests', async () => {
+  const result = await run(['--local', '--php', process.execPath, '--json'], undefined, 'v24.19.0')
+  assert.equal(result.stderr, '')
 })
 
 test('the URL skill runs independently with its bundled checker', async t => {

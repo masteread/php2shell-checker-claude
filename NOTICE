@@ -17,5 +17,7 @@ Changes from the original:
 - Added references to the PHP and Node.js October 21, 2026 security
   advisories in the skills and README.
 - Checker script (skills/url/scripts/phpcheck.js): requests responses with
-  Accept-Encoding: identity and cites the PHP advisory in a comment. The
+  Accept-Encoding: identity, warns on stderr when run on a Node.js release
+  missing the October 21, 2026 security fixes, and cites the PHP advisory in
+  a comment. The
   version classification and cutoffs are unchanged.

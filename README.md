@@ -36,7 +36,9 @@ the checker connects to servers you do not control, and these releases fix,
 among others, a Brotli decoder RCE (CVE-2026-111497) and several TLS
 certificate validation bypasses. Use **Node 22.23.4, 24.22.1, 26.12.1 or
 later** on your release line. The `/phpcheck:url` skill checks your Node
-version before running the checker.
+version before running the checker, and the checker itself prints a warning on
+stderr when you run it on an unpatched Node (the result and exit code do not
+change).
 
 ## Installation
 
@@ -178,7 +180,9 @@ el checker se conecta a servidores que no controlas, y estas versiones
 corrigen, entre otros fallos, una RCE en el descompresor Brotli
 (CVE-2026-111497) y varios saltos de validación de certificados TLS. Usa
 **Node 22.23.4, 24.22.1, 26.12.1 o posterior** en su rama. La skill
-`/phpcheck:url` revisa tu versión de Node antes de ejecutar el checker.
+`/phpcheck:url` revisa tu versión de Node antes de ejecutar el checker, y el
+propio checker muestra un aviso en stderr si lo ejecutas con un Node sin
+parchear (el resultado y el código de salida no cambian).
 
 ## Instalación
 
