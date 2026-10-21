@@ -4,6 +4,14 @@ Todos los cambios relevantes de este proyecto se documentan aquí. El formato
 sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el proyecto
 usa [versionado semántico](https://semver.org/lang/es/).
 
+## [1.0.1] - 2026-10-21
+
+### Corregido
+
+- `/phpcheck:url` ya no falla cuando Claude añade comandos al checker (como
+  `; echo $?`): la skill indica ejecutarlo tal cual, para que siga
+  preaprobado por `allowed-tools`.
+
 ## [1.0.0] - 2026-10-21
 
 ### Añadido

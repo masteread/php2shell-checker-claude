@@ -21,6 +21,10 @@ and reads the `Server` and `X-Powered-By` headers. It does not follow
 redirects. If the site redirects, such as from `http://` to `https://` or to
 `www.`, offer to check the final URL.
 
+Run the command exactly as shown, as a single command. Do not chain `echo`,
+pipes or other commands onto it: the JSON output already includes
+`exit_code`, and a modified command is no longer pre-approved.
+
 Exit codes 1 and 3 mean vulnerable and unknown. They are results, not
 execution failures. Exit code 2 means invalid arguments.
 
