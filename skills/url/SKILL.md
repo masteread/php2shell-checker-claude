@@ -2,10 +2,23 @@
 name: url
 description: Check the PHP version a website advertises in its HTTP headers and report whether it is patched against PHP2Shell (October 2026 PHP security releases). Use when the user gives a URL or hostname and asks if it is vulnerable, patched or up to date.
 argument-hint: "<url-or-hostname>"
-allowed-tools: Bash(node ${CLAUDE_SKILL_DIR}/scripts/phpcheck.js *)
+allowed-tools: Bash(node --version) Bash(node ${CLAUDE_SKILL_DIR}/scripts/phpcheck.js *)
 ---
 
-Run the bundled checker against the target. Use HTTPS for a bare hostname:
+PHP2Shell refers to CVE-2026-109618 and CVE-2026-109619, the two critical
+remote code execution vulnerabilities fixed in PHP 8.5.12, 8.4.27, 8.3.36 and
+8.2.35 on October 21, 2026 (https://www.php.net/archive/2026.php#2026-10-21-5).
+PHP 8.1 and older received no upstream release.
+
+First run `node --version`. The checker connects to servers you do not control,
+and the Node.js October 21, 2026 security releases fixed a Brotli decoder
+remote code execution and TLS hostname bypasses
+(https://nodejs.org/en/blog/vulnerability/october-2026-security-releases).
+If Node is older than 22.23.4 on 22.x, 24.22.1 on 24.x or 26.12.1 on 26.x, or
+on an end-of-life line, tell the user to update Node and ask before
+continuing.
+
+Then run the bundled checker against the target. Use HTTPS for a bare hostname:
 
 ```sh
 node ${CLAUDE_SKILL_DIR}/scripts/phpcheck.js "https://example.com" --json

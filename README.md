@@ -1,19 +1,45 @@
 # PHP2Shell Checker para Claude Code
 
 Comprueba si un sitio web o un servidor usa una versión de PHP afectada por
-**PHP2Shell**, la vulnerabilidad corregida en las versiones de seguridad de PHP
-publicadas el 20–21 de octubre de 2026. No envía peticiones de explotación:
+**PHP2Shell**: las dos vulnerabilidades críticas de ejecución remota de código
+(CVE-2026-109618 y CVE-2026-109619) corregidas en las versiones de seguridad
+de PHP publicadas el 21 de octubre de 2026. No envía peticiones de explotación:
 solo lee la versión que anuncia el servidor (cabeceras HTTP) o la que devuelve
 `php -v`.
 
 Es una adaptación para Claude Code de
 [openai/php2shell-checker](https://github.com/openai/php2shell-checker)
-(Apache 2.0), empaquetada como plugin. Usa Node.js 18 o superior y no necesita
-instalar paquetes.
+(Apache 2.0), empaquetada como plugin. Usa Node.js (versión parcheada, ver
+abajo) y no necesita instalar paquetes.
 
 > *English: a Claude Code plugin port of openai/php2shell-checker. Install with
 > the two `/plugin` commands below, then run `/phpcheck:url example.com` or
 > `/phpcheck:server`.*
+
+## Avisos oficiales
+
+**PHP** ([aviso del 21 de octubre de 2026](https://www.php.net/archive/2026.php#2026-10-21-5)):
+
+| CVE | Descripción | Aviso |
+| --- | --- | --- |
+| CVE-2026-109618 | RCE por corrupción tras falta de memoria (OOM) | [GHSA-w8hw-w9fx-j79w](https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w) |
+| CVE-2026-109619 | RCE por estado global obsoleto entre peticiones | [GHSA-6wmf-4rv5-p3rp](https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp) |
+
+- Versiones corregidas: **8.5.12, 8.4.27, 8.3.36 y 8.2.35**.
+- Afecta a toda instalación que sirva peticiones web: PHP-FPM, Apache con
+  mod_php (el riesgo más alto), php-cgi, FrankenPHP y LiteSpeed.
+- PHP 8.1 y anteriores no tienen versión oficial corregida: solo backports de
+  tu distribución o proveedor LTS, o las ramas de código fuente que publicó el
+  equipo de PHP para 7.4, 8.0 y 8.1.
+- Las mitigaciones temporales del aviso reducen la exposición, pero **no**
+  hacen segura la instalación. Actualizar es la única solución completa.
+
+**Node.js** ([avisos del 21 de octubre de 2026](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases)):
+el checker se conecta a servidores que no controlas, y estas versiones
+corrigen, entre otros fallos, una RCE en el descompresor Brotli
+(CVE-2026-111497) y varios saltos de validación de certificados TLS. Usa
+**Node 22.23.4, 24.22.1, 26.12.1 o posterior** en su rama. La skill
+`/phpcheck:url` revisa tu versión de Node antes de ejecutar el checker.
 
 ## Instalación
 
@@ -89,8 +115,8 @@ argumentos inválidos salen con código `2`.
 ## Limitaciones
 
 - Solo evalúa la versión que aparece en las cabeceras `Server` y
-  `X-Powered-By`, o en `php -v`. Envía `HEAD` y solo recurre a `GET` si `HEAD`
-  devuelve 405 o 501. No sigue redirecciones ni lee el cuerpo de la respuesta.
+  `X-Powered-By`, o en `php -v`. Envía `HEAD` (pidiendo respuesta sin
+  comprimir) y solo recurre a `GET` si `HEAD` devuelve 405 o 501. No sigue redirecciones ni lee el cuerpo de la respuesta.
 - `OK` es una comparación de versiones contra los cortes incluidos. Supone que
   los parches estables posteriores de cada rama incluyen la corrección; no
   verifica la corrección por sí mismo. Contrasta los cortes con el aviso de

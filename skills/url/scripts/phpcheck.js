@@ -5,6 +5,8 @@ const { parseArgs } = require('node:util')
 const VERSION = '1.0.0'
 // Vulnerable version cutoffs as of 2026-10-20. A newer stable patch in a
 // listed branch is OK by this table; unlisted branches remain unknown.
+// Matches the 2026-10-21 PHP advisory for CVE-2026-109618 and CVE-2026-109619:
+// fixed in 8.5.12, 8.4.27, 8.3.36 and 8.2.35; no upstream release for 8.1 and older.
 const VULNERABLE_THROUGH = {
   '5.4': 45, '5.5': 38, '5.6': 40,
   '7.0': 33, '7.1': 33, '7.2': 34, '7.3': 33, '7.4': 33,
@@ -34,6 +36,8 @@ async function urlHeaders(address, timeout) {
   for (const method of ['HEAD', 'GET']) {
     const response = await fetch(url, {
       method, redirect: 'manual', signal: AbortSignal.timeout(Math.ceil(timeout * 1000)),
+      // Only headers are read, so ask for no compression (fewer decoder code paths).
+      headers: { 'accept-encoding': 'identity' },
     })
     headers.push(response.headers.get('server') || '', response.headers.get('x-powered-by') || '')
     await response.body?.cancel()

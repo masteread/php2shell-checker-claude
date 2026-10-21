@@ -153,6 +153,17 @@ test('plain text output for a newer version is OK with exit code 0', async t => 
   assert.equal(result.stdout, 'OK: PHP 8.4.27\n')
 })
 
+test('requests an uncompressed response', async t => {
+  const encodings = []
+  const url = await serve(t, (req, res) => {
+    encodings.push(req.headers['accept-encoding'])
+    res.setHeader('X-Powered-By', 'PHP/8.4.27')
+    res.end()
+  })
+  check(await run([url, '--json']), 'ok', '8.4.27')
+  assert.deepEqual(encodings, ['identity'])
+})
+
 test('the URL skill runs independently with its bundled checker', async t => {
   const directory = await mkdtemp(path.join(tmpdir(), 'phpcheck-url-'))
   t.after(() => rm(directory, { recursive: true, force: true }))

@@ -1,6 +1,6 @@
 {
   "name": "phpcheck",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Check whether a site or server runs a PHP version affected by PHP2Shell, without sending exploit requests.",
   "author": {
     "name": "Eduardo Aguirre"

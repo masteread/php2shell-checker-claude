@@ -4,6 +4,27 @@ Todos los cambios relevantes de este proyecto se documentan aquí. El formato
 sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el proyecto
 usa [versionado semántico](https://semver.org/lang/es/).
 
+## [1.1.0] - 2026-10-21
+
+### Añadido
+
+- Referencias a los avisos oficiales de PHP (CVE-2026-109618, CVE-2026-109619)
+  y Node.js del 21 de octubre de 2026 en el README y las skills.
+- `/phpcheck:url` revisa primero que Node.js esté parcheado (22.23.4, 24.22.1
+  o 26.12.1 en su rama) antes de conectarse a un sitio.
+- `/phpcheck:server` explica qué instalaciones están en riesgo, cómo tratar
+  PHP 8.1 y anteriores y que las mitigaciones temporales no sustituyen a
+  actualizar.
+
+### Cambiado
+
+- El checker pide respuestas sin comprimir (`Accept-Encoding: identity`).
+
+### Verificado
+
+- Los cortes de versiones vulnerables coinciden con las versiones corregidas
+  del aviso de PHP (8.5.12, 8.4.27, 8.3.36 y 8.2.35).
+
 ## [1.0.1] - 2026-10-21
 
 ### Corregido

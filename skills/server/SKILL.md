@@ -4,6 +4,13 @@ description: Check whether the PHP serving a site on this machine or server is p
 allowed-tools: Bash(php -v) Bash(php -i *) Bash(php-fpm* -v) Bash(which php*)
 ---
 
+PHP2Shell refers to CVE-2026-109618 (RCE via OOM corruption) and
+CVE-2026-109619 (RCE via stale global state), fixed in PHP 8.5.12, 8.4.27,
+8.3.36 and 8.2.35 on October 21, 2026
+(https://www.php.net/archive/2026.php#2026-10-21-5). They affect every PHP
+installation serving web requests: PHP-FPM, Apache with mod_php (highest
+risk), php-cgi, FrankenPHP and LiteSpeed.
+
 Check the PHP version serving the site. Start with `php -v`, but verify that
 it matches the site's PHP-FPM or Apache installation. The CLI binary is often
 a different version from the one that serves web requests. Look for
@@ -34,6 +41,19 @@ security advisories. Vendor backports may fix an older version. For a
 distribution package, check the installed package revision (for example with
 `dpkg -l 'php*'` or `rpm -qa 'php*'`) against the vendor's advisory. Treat
 unlisted branches as unknown until an advisory confirms their status.
+
+PHP 8.1 and older received no upstream release. They are fixed only by a
+distribution or LTS vendor backport, or by a build from the PHP security
+team's source backport branches for 7.4, 8.0 and 8.1. These builds keep the
+old version number, so confirm the build source before reporting them as
+patched. Packages from `rpms.remirepo.net` were not updated on release day.
+
+If the user cannot update immediately, the advisory lists measures that reduce
+exposure but do not make an installation safe, such as
+`session.upload_progress.enabled=0` and a low `post_max_size` set in
+`php.ini` or the FPM pool, followed by a restart of every worker. Point the
+user to the advisory for the full list, and always say that updating is the
+only complete fix.
 
 The running PHP build and the vendor's package advisory are the useful checks.
 Configuration settings alone do not establish that PHP is patched.
