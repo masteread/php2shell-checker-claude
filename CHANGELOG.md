@@ -4,6 +4,13 @@ Todos los cambios relevantes de este proyecto se documentan aquí. El formato
 sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el proyecto
 usa [versionado semántico](https://semver.org/lang/es/).
 
+## [1.1.1] - 2026-10-21
+
+### Cambiado
+
+- README bilingüe: instrucciones completas en inglés primero y en español al
+  final, con un enlace a la sección en español en la primera línea.
+
 ## [1.1.0] - 2026-10-21
 
 ### Añadido

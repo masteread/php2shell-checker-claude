@@ -12,7 +12,7 @@ Changes from the original:
 - Expanded skill instructions (redirects, PHP-FPM vs CLI, distribution
   packages, authorization).
 - Moved tests to test/ and added package.json.
-- Rewrote README in Spanish; added CHANGELOG.
+- Rewrote README in English and Spanish; added CHANGELOG.
 
 - Added references to the PHP and Node.js October 21, 2026 security
   advisories in the skills and README.
